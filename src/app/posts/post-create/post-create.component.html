@@ -1,0 +1,39 @@
+<mat-card>
+  <form #f="ngForm" (submit)="onAddPost(f)">
+    <mat-form-field>
+      <input
+        type="text"
+        name="title"
+        ngModel
+        #title="ngModel"
+        matInput
+        placeholder="Post Title"
+        required
+      />
+      <mat-error *ngIf="title.invalid">Please enter post title</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        rows="4"
+        name="content"
+        ngModel
+        #content="ngModel"
+        required
+        placeholder="Post Description"
+      ></textarea>
+      <mat-error *ngIf="title.invalid">Please enter post description</mat-error>
+    </mat-form-field>
+
+    <button
+      type="submit"
+      color="primary"
+      mat-raised-button
+      [matTooltip]="f.invalid ? 'Please Fill all required fields' : ''"
+      matTooltipPosition="left"
+      [disabled]="f.invalid"
+    >
+      Submit
+    </button>
+  </form>
+</mat-card>
