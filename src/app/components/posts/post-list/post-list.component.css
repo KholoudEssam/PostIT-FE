@@ -4,3 +4,6 @@ div {
 .centred {
   text-align: center;
 }
+mat-spinner {
+  margin: 1rem auto;
+}

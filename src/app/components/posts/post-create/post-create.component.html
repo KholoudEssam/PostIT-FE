@@ -1,23 +1,27 @@
-<mat-card>
-  <form #f="ngForm" (submit)="onAddPost(f)">
+<mat-spinner *ngIf="loading"></mat-spinner>
+<mat-card *ngIf="!loading">
+  <form #f="ngForm" (submit)="onSubmitForm(f)">
     <mat-form-field>
       <input
         type="text"
         name="title"
-        ngModel
+        [ngModel]="editedPost?.title"
         #title="ngModel"
         matInput
         placeholder="Post Title"
         required
+        minlength="5"
       />
-      <mat-error *ngIf="title.invalid">Please enter post title</mat-error>
+      <mat-error *ngIf="title.invalid"
+        >Please enter title with min-length 5 char</mat-error
+      >
     </mat-form-field>
     <mat-form-field>
       <textarea
         matInput
         rows="4"
         name="content"
-        ngModel
+        [ngModel]="editedPost?.content"
         #content="ngModel"
         required
         placeholder="Post Description"
@@ -33,7 +37,8 @@
       matTooltipPosition="left"
       [disabled]="f.invalid"
     >
-      Submit
+      <span *ngIf="editMode">Update</span>
+      <span *ngIf="!editMode">Save</span>
     </button>
   </form>
 </mat-card>
