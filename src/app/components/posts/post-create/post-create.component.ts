@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PostsService } from 'src/app/services/posts.service';
@@ -12,10 +12,12 @@ import { Post } from '../../../models/post.model';
 })
 export class PostCreateComponent implements OnInit, OnDestroy {
   sub: Subscription;
+  form: FormGroup;
   editMode: Boolean = false;
   loading = false;
   postId: string;
-  editedPost: Post;
+  previewImage: any;
+
   constructor(
     public postsService: PostsService,
     private route: ActivatedRoute,
@@ -23,14 +25,24 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      title: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(5)],
+      }),
+      content: new FormControl(null, { validators: [Validators.required] }),
+      image: new FormControl(null, { validators: [Validators.required] }),
+    });
     this.sub = this.route.paramMap.subscribe((param) => {
       this.loading = true;
       if (param.has('id')) {
         this.editMode = true;
         this.postId = param.get('id');
         this.postsService.getPost(this.postId).subscribe((post) => {
-          this.editedPost = post;
           this.loading = false;
+          this.form.setValue({
+            title: post.title,
+            content: post.content,
+          });
         });
       } else {
         this.loading = false;
@@ -38,18 +50,29 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmitForm(data: NgForm) {
+  onImageChange(e) {
+    const file = e.target.files[0];
+    this.form.patchValue({ image: file });
+    this.form.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImage = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onSubmitForm() {
     const post: Post = {
-      title: data.value.title,
-      content: data.value.content,
+      title: this.form.value.title,
+      content: this.form.value.content,
     };
     if (this.editMode) {
       this.postsService.updatePost(this.postId, post);
     } else {
       this.postsService.addPosts(post);
     }
+    this.form.reset();
     this.router.navigate(['/']);
-    data.resetForm();
   }
 
   ngOnDestroy(): void {

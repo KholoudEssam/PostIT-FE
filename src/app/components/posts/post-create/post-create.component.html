@@ -1,44 +1,54 @@
 <mat-spinner *ngIf="loading"></mat-spinner>
 <mat-card *ngIf="!loading">
-  <form #f="ngForm" (submit)="onSubmitForm(f)">
+  <form [formGroup]="form" (submit)="onSubmitForm(f)">
     <mat-form-field>
       <input
         type="text"
-        name="title"
-        [ngModel]="editedPost?.title"
-        #title="ngModel"
         matInput
         placeholder="Post Title"
-        required
-        minlength="5"
+        formControlName="title"
       />
-      <mat-error *ngIf="title.invalid"
+      <mat-error *ngIf="form.get('title').invalid"
         >Please enter title with min-length 5 char</mat-error
       >
     </mat-form-field>
+
+    <div>
+      <button
+        type="button"
+        mat-stroked-button
+        color="primary"
+        (click)="filePicker.click()"
+      >
+        Upload Image
+      </button>
+      <input type="file" #filePicker (change)="onImageChange($event)" />
+    </div>
+    <div class="image-preview" *ngIf="previewImage && previewImage !== ''">
+      <img [src]="previewImage" [alt]="form.value.title" />
+    </div>
     <mat-form-field>
       <textarea
         matInput
         rows="4"
-        name="content"
-        [ngModel]="editedPost?.content"
-        #content="ngModel"
-        required
         placeholder="Post Description"
+        formControlName="content"
       ></textarea>
-      <mat-error *ngIf="title.invalid">Please enter post description</mat-error>
+      <mat-error *ngIf="form.get('content').invalid"
+        >Please enter post description</mat-error
+      >
     </mat-form-field>
 
     <button
       type="submit"
       color="primary"
       mat-raised-button
-      [matTooltip]="f.invalid ? 'Please Fill all required fields' : ''"
+      [matTooltip]="form.invalid ? 'Please Fill all required fields' : ''"
       matTooltipPosition="left"
-      [disabled]="f.invalid"
+      [disabled]="form.invalid"
     >
       <span *ngIf="editMode">Update</span>
-      <span *ngIf="!editMode">Save</span>
+      <span *ngIf="!editMode">Create</span>
     </button>
   </form>
 </mat-card>
