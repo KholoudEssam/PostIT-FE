@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PostsService } from 'src/app/services/posts.service';
 import { Post } from '../../../models/post.model';
+import { mimeType } from './mimeType.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -30,7 +31,10 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         validators: [Validators.required, Validators.minLength(5)],
       }),
       content: new FormControl(null, { validators: [Validators.required] }),
-      image: new FormControl(null, { validators: [Validators.required] }),
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType],
+      }),
     });
     this.sub = this.route.paramMap.subscribe((param) => {
       this.loading = true;

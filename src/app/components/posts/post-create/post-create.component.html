@@ -22,9 +22,17 @@
       >
         Upload Image
       </button>
-      <input type="file" #filePicker (change)="onImageChange($event)" />
+      <input
+        type="file"
+        accept=".png,.PNG, .jpg, .jpeg, .JPEG, .JPG"
+        #filePicker
+        (change)="onImageChange($event)"
+      />
     </div>
-    <div class="image-preview" *ngIf="previewImage && previewImage !== ''">
+    <div
+      class="image-preview"
+      *ngIf="previewImage && previewImage !== '' && form.get('image').valid"
+    >
       <img [src]="previewImage" [alt]="form.value.title" />
     </div>
     <mat-form-field>
