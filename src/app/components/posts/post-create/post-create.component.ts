@@ -69,6 +69,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     const post: Post = {
       title: this.form.value.title,
       content: this.form.value.content,
+      imageUrl: this.form.value.image,
     };
     if (this.editMode) {
       this.postsService.updatePost(this.postId, post);

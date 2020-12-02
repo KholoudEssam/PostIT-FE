@@ -7,3 +7,10 @@ div {
 mat-spinner {
   margin: 1rem auto;
 }
+.image-post {
+  margin: 0.5rem 0;
+  width: 100%;
+}
+.image-post img {
+  width: 100%;
+}

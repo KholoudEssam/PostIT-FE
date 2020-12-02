@@ -30,8 +30,13 @@ export class PostsService {
   }
 
   addPosts(post: Post) {
+    const postData = new FormData();
+    postData.append('title', post.title);
+    postData.append('content', post.content);
+    postData.append('image', post.imageUrl);
+
     this._http
-      .post<Post>('http://localhost:3000/api/posts', post)
+      .post<Post>('http://localhost:3000/api/posts', postData)
       .subscribe((data) => {
         this.posts.push(data);
         this.postsUpdated.next([...this.posts]);
