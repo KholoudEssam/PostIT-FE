@@ -31,7 +31,7 @@
     </div>
     <div
       class="image-preview"
-      *ngIf="previewImage && previewImage !== '' && form.get('image').valid"
+      *ngIf="previewImage && previewImage !== '' && form.get('imageUrl').valid"
     >
       <img [src]="previewImage" [alt]="form.value.title" />
     </div>

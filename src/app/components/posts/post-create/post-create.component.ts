@@ -31,7 +31,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         validators: [Validators.required, Validators.minLength(5)],
       }),
       content: new FormControl(null, { validators: [Validators.required] }),
-      image: new FormControl(null, {
+      imageUrl: new FormControl(null, {
         validators: [Validators.required],
         asyncValidators: [mimeType],
       }),
@@ -42,11 +42,13 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.editMode = true;
         this.postId = param.get('id');
         this.postsService.getPost(this.postId).subscribe((post) => {
-          this.loading = false;
+          // console.log(post);
           this.form.setValue({
             title: post.title,
             content: post.content,
+            imageUrl: post.imageUrl,
           });
+          this.loading = false;
         });
       } else {
         this.loading = false;
@@ -56,8 +58,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
 
   onImageChange(e) {
     const file = e.target.files[0];
-    this.form.patchValue({ image: file });
-    this.form.get('image').updateValueAndValidity();
+    this.form.patchValue({ imageUrl: file });
+    this.form.get('imageUrl').updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.previewImage = reader.result;
@@ -69,7 +71,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     const post: Post = {
       title: this.form.value.title,
       content: this.form.value.content,
-      imageUrl: this.form.value.image,
+      imageUrl: this.form.value.imageUrl,
     };
     if (this.editMode) {
       this.postsService.updatePost(this.postId, post);
