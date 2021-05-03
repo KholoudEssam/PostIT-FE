@@ -68,15 +68,22 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
-    const post: Post = {
-      title: this.form.value.title,
-      content: this.form.value.content,
-      imageUrl: this.form.value.imageUrl,
-    };
+    const { title, content, imageUrl } = this.form.value;
+    let postData = new FormData();
+
+    postData.append('title', title);
+    postData.append('content', content);
+
+    if (typeof imageUrl === 'object') {
+      postData.append('imageUrl', imageUrl);
+    }
+
     if (this.editMode) {
-      this.postsService.updatePost(this.postId, post);
+      this.postsService
+        .updatePost(this.postId, postData)
+        .subscribe((res) => {});
     } else {
-      this.postsService.addPosts(post);
+      this.postsService.addPosts(postData).subscribe((res) => {});
     }
     this.form.reset();
     this.router.navigate(['/']);

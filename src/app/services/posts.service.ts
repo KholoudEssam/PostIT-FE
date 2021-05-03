@@ -7,8 +7,10 @@ import { Post } from '../models/post.model';
   providedIn: 'root',
 })
 export class PostsService {
+  private apiRoot = 'http://localhost:3000';
   private posts: Post[] = [];
-  private postsUpdated = new Subject<Post[]>();
+  private postsCount: number;
+  private postsUpdated = new Subject<{ posts: Post[]; postsCount: number }>();
   constructor(private _http: HttpClient) {}
 
   //can listen but cannot emit
@@ -16,64 +18,36 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
-  getPosts() {
+  getPosts(pageSize: number, currentPage: number) {
+    const queryParams = `?pagesize=${pageSize}&currentpage=${currentPage}`;
     this._http
-      .get<Post[]>('http://localhost:3000/api/posts')
+      .get<{ posts: Post[]; postsCount: number }>(
+        `${this.apiRoot}/api/posts${queryParams}`
+      )
       .subscribe((data) => {
-        this.posts = data;
-        this.postsUpdated.next([...this.posts]);
+        this.posts = data.posts;
+        this.postsCount = data.postsCount;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postsCount: this.postsCount,
+        });
       });
+    return this.postsUpdatedListener();
   }
 
   getPost(id) {
-    return this._http.get<Post>(`http://localhost:3000/api/posts/${id}`);
+    return this._http.get<Post>(`${this.apiRoot}/api/posts/${id}`);
   }
 
-  addPosts(post: Post) {
-    const postData = new FormData();
-    postData.append('title', post.title);
-    postData.append('content', post.content);
-    postData.append('imageUrl', post.imageUrl);
-
-    this._http
-      .post<Post>('http://localhost:3000/api/posts', postData)
-      .subscribe((data) => {
-        this.posts.push(data);
-        this.postsUpdated.next([...this.posts]);
-      });
+  addPosts(post: FormData) {
+    return this._http.post<Post>(`${this.apiRoot}/api/posts`, post);
   }
 
-  updatePost(id: string, updatePost: Post) {
-    let postData: Post | FormData;
-    if (typeof updatePost.imageUrl === 'object') {
-      postData = new FormData();
-      postData.append('title', updatePost.title);
-      postData.append('content', updatePost.content);
-      postData.append('imageUrl', updatePost.imageUrl);
-    } else {
-      postData = updatePost;
-    }
-
-    this._http
-      .put<Post>(`http://localhost:3000/api/posts/${id}`, postData)
-      .subscribe((newPost) => {
-        this.posts.find((post) => {
-          if (post._id === newPost._id) {
-            post.title = newPost.title;
-            post.content = newPost.content;
-            post.imageUrl = newPost.imageUrl;
-          }
-        });
-        this.postsUpdated.next(this.posts);
-      });
+  updatePost(id: string, updatePost: FormData) {
+    return this._http.put<Post>(`${this.apiRoot}/api/posts/${id}`, updatePost);
   }
 
   deletePost(id: string) {
-    this._http
-      .delete(`http://localhost:3000/api/posts/${id}`)
-      .subscribe((deletedPost) => {
-        this.posts = this.posts.filter((post) => post._id != id);
-        this.postsUpdated.next([...this.posts]);
-      });
+    return this._http.delete(`${this.apiRoot}/api/posts/${id}`);
   }
 }

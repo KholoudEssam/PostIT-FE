@@ -5,9 +5,6 @@ textarea {
 mat-form-field {
   margin-bottom: 0.5rem;
 }
-mat-spinner {
-  margin: 1rem auto;
-}
 button {
   margin-bottom: 1rem;
 }

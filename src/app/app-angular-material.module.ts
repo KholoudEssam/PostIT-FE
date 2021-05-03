@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
 const modules = [
   MatCardModule,
   MatFormFieldModule,
@@ -17,6 +18,7 @@ const modules = [
   MatExpansionModule,
   MatTooltipModule,
   MatProgressSpinnerModule,
+  MatPaginatorModule,
 ];
 
 @NgModule({

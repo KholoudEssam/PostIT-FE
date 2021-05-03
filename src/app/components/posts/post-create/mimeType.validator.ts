@@ -5,7 +5,7 @@ export const mimeType = (
   control: AbstractControl
 ): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
   if (typeof control.value === 'string') {
-    console.log('string is');
+    // console.log('string is');
     return new Promise(null);
   }
   const file = control.value as File;

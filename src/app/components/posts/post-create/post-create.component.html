@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="loading"></mat-spinner>
 <mat-card *ngIf="!loading">
-  <form [formGroup]="form" (submit)="onSubmitForm(f)">
+  <form [formGroup]="form" (submit)="onSubmitForm()">
     <mat-form-field>
       <input
         type="text"
