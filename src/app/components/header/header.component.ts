@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     this.authService.isAuth.next(false);
     this.router.navigate(['/']);
   }

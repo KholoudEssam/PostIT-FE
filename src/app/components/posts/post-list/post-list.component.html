@@ -9,7 +9,7 @@
         <img [src]="post.imageUrl" [alt]="post.title" />
       </div>
       <p>{{ post.content }}</p>
-      <mat-action-row *ngIf="isAuth">
+      <mat-action-row *ngIf="isAuth && currentUserId === post.creatorId">
         <a mat-button color="primary" [routerLink]="['/edit', post._id]">
           EDIT
         </a>
@@ -29,6 +29,6 @@
     *ngIf="posts.length > 0"
   ></mat-paginator>
 </div>
-<div *ngIf="posts.length <= 0 && loading === false">
+<div *ngIf="posts.length <= 0 && !loading">
   <p class="mat-body-2 centred">No Posts added yet!</p>
 </div>
