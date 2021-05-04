@@ -1,0 +1,18 @@
+mat-form-field {
+  display: block;
+  padding: 5px 10px;
+  padding-bottom: 0;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  margin: 0 10px;
+  margin-bottom: 1rem;
+}
+
+.err {
+  width: 100%;
+  color: #da428b;
+  margin: 20px auto;
+  text-align: center;
+}

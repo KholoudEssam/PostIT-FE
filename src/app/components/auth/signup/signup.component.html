@@ -1,0 +1,63 @@
+<div class="err" *ngIf="isErr && !loading">Invalid data</div>
+
+<mat-spinner *ngIf="loading"></mat-spinner>
+<mat-card *ngIf="!loading">
+  <form #f="ngForm" (submit)="onSubmitForm(f)">
+    <mat-form-field>
+      <input
+        type="text"
+        matInput
+        placeholder="Name"
+        required
+        name="name"
+        ngModel
+        #name="ngModel"
+      />
+      <mat-error *ngIf="name.invalid">Please enter a Name</mat-error>
+    </mat-form-field>
+
+    <mat-form-field [appearance]="">
+      <input
+        type="email"
+        matInput
+        placeholder="E-mail"
+        required
+        email
+        pattern=".+@.+\..+"
+        name="email"
+        ngModel
+        #email="ngModel"
+      />
+      <mat-error *ngIf="email.errors?.required"
+        >Please enter an email</mat-error
+      >
+      <mat-error *ngIf="email.errors?.pattern"
+        >Please enter a valid email</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        type="password"
+        matInput
+        placeholder="Password"
+        required
+        name="password"
+        ngModel
+        #password="ngModel"
+      />
+      <mat-error *ngIf="password.invalid">Please enter a Password</mat-error>
+    </mat-form-field>
+
+    <button
+      type="submit"
+      color="accent"
+      mat-raised-button
+      [matTooltip]="f.invalid ? 'Please Fill all required fields' : ''"
+      matTooltipPosition="left"
+      [disabled]="f.invalid"
+    >
+      Signup
+    </button>
+  </form>
+</mat-card>
