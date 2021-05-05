@@ -3,10 +3,12 @@
   <span class="spacer"></span>
   <ul>
     <li *ngIf="!isAuth">
-      <a routerLink="/login" mat-button routerLinkActive="mat-accent">Login</a>
+      <a routerLink="/auth/login" mat-button routerLinkActive="mat-accent"
+        >Login</a
+      >
     </li>
     <li *ngIf="!isAuth">
-      <a routerLink="/signup" mat-button routerLinkActive="mat-accent"
+      <a routerLink="/auth/signup" mat-button routerLinkActive="mat-accent"
         >Sign up</a
       >
     </li>

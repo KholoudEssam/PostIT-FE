@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { PostsModule } from './components/posts/posts.module';
-import { AuthModule } from './components/auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -19,7 +18,6 @@ import { AuthModule } from './components/auth/auth.module';
     AppAngularMaterialModule,
     HttpClientModule,
     PostsModule,
-    AuthModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

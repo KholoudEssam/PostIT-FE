@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { PostCreateComponent } from './post-create/post-create.component';
 import { PostListComponent } from './post-list/post-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AppAngularMaterialModule } from 'src/app/app-angular-material.module';
 
 @NgModule({
   declarations: [PostCreateComponent, PostListComponent],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AppAngularMaterialModule],
 })
 export class PostsModule {}
