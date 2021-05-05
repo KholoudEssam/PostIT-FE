@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Post } from '../models/post.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostsService {
-  private apiRoot = 'http://localhost:3000';
+  private BEUrl = `${environment.apiUrl}/api/posts`;
+
   private posts: Post[] = [];
   private postsCount: number;
   private postsUpdated = new Subject<{ posts: Post[]; postsCount: number }>();
@@ -21,9 +23,7 @@ export class PostsService {
   getPosts(pageSize: number, currentPage: number) {
     const queryParams = `?pagesize=${pageSize}&currentpage=${currentPage}`;
     this._http
-      .get<{ posts: Post[]; postsCount: number }>(
-        `${this.apiRoot}/api/posts${queryParams}`
-      )
+      .get<{ posts: Post[]; postsCount: number }>(`${this.BEUrl}${queryParams}`)
       .subscribe((data) => {
         this.posts = data.posts;
         this.postsCount = data.postsCount;
@@ -36,18 +36,18 @@ export class PostsService {
   }
 
   getPost(id) {
-    return this._http.get<Post>(`${this.apiRoot}/api/posts/${id}`);
+    return this._http.get<Post>(`${this.BEUrl}/${id}`);
   }
 
   addPosts(post: FormData) {
-    return this._http.post<Post>(`${this.apiRoot}/api/posts`, post);
+    return this._http.post<Post>(`${this.BEUrl}`, post);
   }
 
   updatePost(id: string, updatePost: FormData) {
-    return this._http.put<Post>(`${this.apiRoot}/api/posts/${id}`, updatePost);
+    return this._http.put<Post>(`${this.BEUrl}/${id}`, updatePost);
   }
 
   deletePost(id: string) {
-    return this._http.delete(`${this.apiRoot}/api/posts/${id}`);
+    return this._http.delete(`${this.BEUrl}/${id}`);
   }
 }
