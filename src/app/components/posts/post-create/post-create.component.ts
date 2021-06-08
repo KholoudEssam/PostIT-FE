@@ -68,6 +68,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
+    this.loading = true;
+
     const { title, content, imageUrl } = this.form.value;
     let postData = new FormData();
 
@@ -79,14 +81,27 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     }
 
     if (this.editMode) {
-      this.postsService
-        .updatePost(this.postId, postData)
-        .subscribe((res) => {});
+      this.postsService.updatePost(this.postId, postData).subscribe((res) => {
+        this.loading = false;
+
+        if (res) {
+          this.postsService.postsUpdated.next();
+          this.router.navigate(['/']);
+        }
+      });
     } else {
-      this.postsService.addPosts(postData).subscribe((res) => {});
+      this.postsService.addPosts(postData).subscribe((res) => {
+        // console.log('res', res);
+        this.loading = false;
+
+        if (res) {
+          if (res) {
+            this.router.navigate(['/']);
+            this.postsService.postsUpdated.next();
+          }
+        }
+      });
     }
-    this.form.reset();
-    this.router.navigate(['/']);
   }
 
   ngOnDestroy(): void {

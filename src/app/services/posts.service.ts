@@ -12,7 +12,7 @@ export class PostsService {
 
   private posts: Post[] = [];
   private postsCount: number;
-  private postsUpdated = new Subject<{ posts: Post[]; postsCount: number }>();
+  postsUpdated = new Subject<{ posts: Post[]; postsCount: number }>();
   constructor(private _http: HttpClient) {}
 
   //can listen but cannot emit

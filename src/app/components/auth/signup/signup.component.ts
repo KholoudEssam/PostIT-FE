@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
     this.auth.signup(data).subscribe(
       (user) => {
         // console.log(user);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
       },
       (err) => {
         this.isErr = true;
